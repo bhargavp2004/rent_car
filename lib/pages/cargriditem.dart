@@ -20,7 +20,7 @@ class CarGridItem extends StatelessWidget {
               Image.network(
                 imageURL,
                 fit: BoxFit.fitWidth,
-                height : 200,
+                height : 150,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
                     return child;
