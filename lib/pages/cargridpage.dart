@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cargriditem.dart';
@@ -10,7 +11,10 @@ class CarGridPage extends StatelessWidget {
         title: Text('Car Grid'),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('cars').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('cars')
+            .where('owner', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -21,7 +25,7 @@ class CarGridPage extends StatelessWidget {
           }
 
           var carDocs = snapshot.data?.docs;
-
+          // print(carDocs);
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -31,6 +35,7 @@ class CarGridPage extends StatelessWidget {
             itemBuilder: (context, index) {
               if (carDocs != null) {
                 var carData = carDocs[index].data() as Map<String, dynamic>;
+                print(carData);
                 var imagePath = carData['image'] as String?;
                 var carId = carDocs[index].id;
 
@@ -39,7 +44,7 @@ class CarGridPage extends StatelessWidget {
                   var brand = carData['brand'] as String;
                   var model = carData['model'] as String;
                   return CarGridItem(
-                    carId : carId,
+                    carId: carId,
                     brand: brand,
                     model: model,
                     imageURL: imagePath,

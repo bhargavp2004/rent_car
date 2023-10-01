@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -88,6 +89,7 @@ class _AddPostState extends State<AddPost> {
           'price_per_day': double.parse(_priceController.text),
           'description': _descriptionController.text,
           'image': imageURL,
+          'owner': FirebaseAuth.instance.currentUser!.uid,
         });
         showSnackbar("Car Added Successfully");
         Navigator.push(
@@ -165,7 +167,7 @@ class _AddPostState extends State<AddPost> {
                 child: Text('Select Image'),
               ),
               SizedBox(height: 10),
-              if (selectedImage != null)
+              if (selectedImage!.path.isNotEmpty)
                 Image.file(
                   selectedImage!,
                   fit: BoxFit.cover,

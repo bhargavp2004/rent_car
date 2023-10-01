@@ -104,13 +104,12 @@ class _SignInPageState extends State<SignInPage> {
                 child: Text('Sign In'),
               ),
               CupertinoButton(
-                  child: Text('Create an Account'),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => SignUpScreen()));
-                  })
+                child: Text('Create an Account'),
+                onPressed: () {
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) => SignUpScreen()));
+                },
+              ),
             ],
           ),
         ),

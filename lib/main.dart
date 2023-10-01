@@ -19,9 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CAR RENTAL',
       theme: customTheme,
-      home: (FirebaseAuth.instance.currentUser != null) ? MyHomePage() : SignInPage(),
+      home: (FirebaseAuth.instance.currentUser != null)
+          ? MyHomePage()
+          : SignInPage(),
     );
   }
 }
