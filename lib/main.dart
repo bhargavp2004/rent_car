@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CAR RENTAL',
       theme: customTheme,
+      // theme: ThemeData(useMaterial3: true, customTheme),
       home: (FirebaseAuth.instance.currentUser != null)
           ? MyHomePage()
           : SignInPage(),

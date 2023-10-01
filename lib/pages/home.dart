@@ -11,7 +11,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter UI Example'),
@@ -25,14 +24,16 @@ class MyHomePage extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CarGridPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CarGridPage()));
                 },
                 child: Text('View My Posts'),
                 style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPost()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddPost()));
                 },
                 child: Text('Add Post'),
                 style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
@@ -49,6 +50,16 @@ class MyHomePage extends StatelessWidget {
                   // Add your action for "Update Post" here
                 },
                 child: Text('Update Post'),
+                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Add your action for "logout" here
+                  FirebaseAuth.instance.signOut();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
+                },
+                child: Text('logout'),
                 style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
               ),
             ],

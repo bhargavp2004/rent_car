@@ -3,16 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rent_car/pages/home.dart';
+import 'package:rent_car/pages/home_user.dart';
 import 'signup.dart';
 import 'dart:core';
-import 'login_user.dart';
+import 'login.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage_User extends StatefulWidget {
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignInPage_User> createState() => _SignInPage_UserState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPage_UserState extends State<SignInPage_User> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
@@ -56,14 +57,14 @@ class _SignInPageState extends State<SignInPage> {
         if (uc.user != null) {
           QuerySnapshot snapshot = await FirebaseFirestore.instance
               .collection(
-                  'admins') // Replace 'your_collection' with your actual collection name
+                  'users') // Replace 'your_collection' with your actual collection name
               .where('uid', isEqualTo: uc.user!.uid)
               .get();
           if (snapshot.docs.isNotEmpty) {
             showSnackbar('Login Successful!');
             Navigator.popUntil(context, (route) => route.isFirst);
             Navigator.pushReplacement(context,
-                CupertinoPageRoute(builder: (context) => MyHomePage()));
+                CupertinoPageRoute(builder: (context) => MyHomePage_User()));
           }
         }
       } catch (err) {
@@ -109,27 +110,23 @@ class _SignInPageState extends State<SignInPage> {
                 onPressed: () {
                   SignIn(context);
                 },
-                child: Text('Sign In as Admin'),
+                child: Text('Sign In as User'),
               ),
               CupertinoButton(
-                child: Text('Create an Admin Account'),
+                child: Text('Create an User Account'),
                 onPressed: () {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
                           builder: (context) => SignUpScreen(),
-                          settings: RouteSettings(arguments: {
-                            'role': 'admin',
-                          })));
+                          settings:
+                              RouteSettings(arguments: {'role': 'user'})));
                 },
               ),
               CupertinoButton(
-                child: Text('are you a user?'),
+                child: Text('are you an admin?'),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => SignInPage_User()));
+                  Navigator.pop(context);
                 },
               ),
             ],

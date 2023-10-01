@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
@@ -29,6 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void createAccount(BuildContext context) async {
+    final data =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+    final role = data['role'].toString();
+    // print(role + "------------------");
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
@@ -65,12 +70,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       } else {
         try {
           UserCredential userCredentials =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
-          showSnackbar('Registration Successful');
-          if (userCredentials.user != null) {
+          if (userCredentials.user != null && role.compareTo('user') == 0) {
+            print('==============');
+            showSnackbar('Registration Successful');
+            FirebaseFirestore.instance
+                .collection('users')
+                .add({'uid': userCredentials.user!.uid});
+            Navigator.pop(context);
+          }
+          if (userCredentials.user != null && role.compareTo('admin') == 0) {
+            print('==============');
+            showSnackbar('Registration Successful');
+            FirebaseFirestore.instance
+                .collection('admins')
+                .add({'uid': userCredentials.user!.uid});
             Navigator.pop(context);
           }
         } catch (err) {
@@ -82,6 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print(data['role'].toString() + '+_+_+_+_+_+_+_+_+_+_+_+_++_+_+__+_+');
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up'),
@@ -97,7 +115,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email Address',
-
                 ),
               ),
               SizedBox(height: 20.0),
@@ -105,7 +122,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-
                 ),
                 obscureText: true,
               ),
@@ -114,7 +130,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: confirmPasswordController,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-
                 ),
                 obscureText: true,
               ),
@@ -127,11 +142,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CupertinoButton(
                 child: Text('Already have an account? Sign in'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pop(
                     context,
-                    CupertinoPageRoute(
-                      builder: (context) => SignInPage(),
-                    ),
+                    // CupertinoPageRoute(
+                    //   builder: (context) => SignInPage(),
+                    // ),
                   );
                 },
               ),
