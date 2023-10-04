@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rent_car/pages/home.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddPost extends StatefulWidget {
   @override
@@ -107,60 +108,145 @@ class _AddPostState extends State<AddPost> {
 
   @override
   Widget build(BuildContext context) {
+    List<DateTime> _selectedDate = [];
+    DateTime _startDate = DateTime.now().subtract(Duration(days: 30));
+    DateTime _endDate = DateTime.now().add(Duration(days: 30));
+
+    void _showDatePickerDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Date Range Picker'),
+            content: Container(
+              width: 300.0, // Adjust the width as needed
+              height: 400.0, // Adjust the height as needed
+              child: SfDateRangePicker(
+                view: DateRangePickerView.month,
+                selectionMode: DateRangePickerSelectionMode.multiple,
+                initialSelectedRange: PickerDateRange(_startDate, _endDate),
+                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // DateTime? selectedDate;
+    // selectDate() async{
+    //   final DateTime? picked = await showDatePicker(
+    //     context: context,
+    //     initialDate: selectedDate ?? DateTime.now(),
+    //     firstDate: DateTime(2000),
+    //     lastDate: DateTime(2101),
+    //   );
+
+    //   if (picked != null && picked != selectedDate) {
+    //     setState(() {
+    //       selectedDate = picked;
+    //     });
+    //   }
+    // }
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Post'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(18.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: _brandController,
-                decoration: InputDecoration(labelText: 'Car Brand'),
-                validator: (value) {
-                  if (value != null) {
-                    if (value.isEmpty) {
-                      return 'Please enter the car brand';
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _brandController,
+                  decoration: InputDecoration(labelText: 'Car Brand',border: OutlineInputBorder()),
+                  validator: (value) {
+                    if (value != null) {
+                      if (value.isEmpty) {
+                        return 'Please enter the car brand';
+                      }
                     }
-                  }
-                  return null;
-                },
+                    return null;
+                  },
+                ),
               ),
-              TextFormField(
-                controller: _modelController,
-                decoration: InputDecoration(labelText: 'Model'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _modelController,
+                  decoration: InputDecoration(labelText: 'Model',border: OutlineInputBorder()),
+                ),
               ),
-              TextFormField(
-                controller: _yearController,
-                decoration: InputDecoration(labelText: 'Year'),
-                keyboardType: TextInputType.number,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                // child: ElevatedButton(
+                //   onPressed: (){
+                //
+                //   },
+                //   child: Text('select date'),
+                // )
+                child: ElevatedButton(
+                  onPressed: () => _showDatePickerDialog(context),
+                  child: Text('Pick a Date'),
+                ),
               ),
-              TextFormField(
-                controller: _colorController,
-                decoration: InputDecoration(labelText: 'Color'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _yearController,
+                  decoration: InputDecoration(labelText: 'Year',border: OutlineInputBorder()),
+                  keyboardType: TextInputType.number,
+                ),
               ),
-              TextFormField(
-                controller: _seatsController,
-                decoration: InputDecoration(labelText: 'Seats'),
-                keyboardType: TextInputType.number,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _colorController,
+                  decoration: InputDecoration(labelText: 'Color',border: OutlineInputBorder()),
+                ),
               ),
-              TextFormField(
-                controller: _mileageController,
-                decoration: InputDecoration(labelText: 'Mileage'),
-                keyboardType: TextInputType.number,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _seatsController,
+                  decoration: InputDecoration(labelText: 'Seats',border: OutlineInputBorder()),
+                  keyboardType: TextInputType.number,
+                ),
               ),
-              TextFormField(
-                controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price per Day'),
-                keyboardType: TextInputType.number,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _mileageController,
+                  decoration: InputDecoration(labelText: 'Mileage',border: OutlineInputBorder()),
+                  keyboardType: TextInputType.number,
+                ),
               ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _priceController,
+                  decoration: InputDecoration(labelText: 'Price per Day',border: OutlineInputBorder()),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(labelText: 'Description',border: OutlineInputBorder()),
+                  maxLines: 3,
+                ),
               ),
               ElevatedButton(
                 onPressed: _pickImage,

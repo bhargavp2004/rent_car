@@ -79,6 +79,9 @@ class _SignInPage_UserState extends State<SignInPage_User> {
       appBar: AppBar(
         title: Text('Sign In'),
         centerTitle: true,
+        // actionsIconTheme: IconThemeData(Icons.add,),
+
+        // actionsIconTheme: ,
       ),
       body: Center(
         child: Padding(
@@ -115,7 +118,7 @@ class _SignInPage_UserState extends State<SignInPage_User> {
               CupertinoButton(
                 child: Text('Create an User Account'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       CupertinoPageRoute(
                           builder: (context) => SignUpScreen(),
@@ -126,7 +129,7 @@ class _SignInPage_UserState extends State<SignInPage_User> {
               CupertinoButton(
                 child: Text('are you an admin?'),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
                 },
               ),
             ],

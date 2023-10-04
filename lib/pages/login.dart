@@ -114,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
               CupertinoButton(
                 child: Text('Create an Admin Account'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       CupertinoPageRoute(
                           builder: (context) => SignUpScreen(),
@@ -126,7 +126,7 @@ class _SignInPageState extends State<SignInPage> {
               CupertinoButton(
                 child: Text('are you a user?'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       CupertinoPageRoute(
                           builder: (context) => SignInPage_User()));

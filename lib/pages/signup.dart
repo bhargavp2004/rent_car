@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rent_car/pages/login_user.dart';
 import 'login.dart';
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             FirebaseFirestore.instance
                 .collection('users')
                 .add({'uid': userCredentials.user!.uid});
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage_User()));;
           }
           if (userCredentials.user != null && role.compareTo('admin') == 0) {
             print('==============');
@@ -88,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             FirebaseFirestore.instance
                 .collection('admins')
                 .add({'uid': userCredentials.user!.uid});
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
           }
         } catch (err) {
           showSnackbar(err.toString());
@@ -142,11 +143,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CupertinoButton(
                 child: Text('Already have an account? Sign in'),
                 onPressed: () {
-                  Navigator.pop(
+                  Navigator.pushReplacement(
                     context,
-                    // CupertinoPageRoute(
-                    //   builder: (context) => SignInPage(),
-                    // ),
+                    CupertinoPageRoute(
+                      builder: (context) => SignInPage(),
+                    ),
                   );
                 },
               ),
