@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CarDetails extends StatefulWidget {
   final String carId;
   CarDetails({required this.carId});
@@ -25,6 +26,8 @@ class _CarDetailsState extends State<CarDetails> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: _carDetails,
       builder: (context, snapshot) {
@@ -49,11 +52,54 @@ class _CarDetailsState extends State<CarDetails> {
         var mileage = carData['mileage'];
         var seats = carData['seats'];
         var price = carData['price_per_day'];
-
+        var available_dates=[];
+        carData['available_dates'].toList().forEach((e) {
+          available_dates.add(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000));
+        });
+        print(available_dates);
+        void _showDatePickerDialog(BuildContext context) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Date Range Picker'),
+                content: Container(
+                  width: 300.0, // Adjust the width as needed
+                  height: 400.0, // Adjust the height as needed
+                  child: SfDateRangePicker(
+                    view: DateRangePickerView.month,
+                    selectionMode: DateRangePickerSelectionMode.multiple,
+                    selectableDayPredicate: (date) {
+                      return available_dates.contains(date);
+                      // print(date);
+                      // return false;
+                    },
+                    // initialSelectedRange: PickerDateRange(_startDate, _endDate),
+                    // onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {_dateRangePickerController.selectedDates!.forEach((element) {print((element.year));});},
+                    // controller: _dateRangePickerController,
+                    // minDate: _startDate,
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        // print(carData['available_dates'].toList().forEach((e){print(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000, isUtc: true)
+        // );}));
+        // print(carData['available_dates'].toList().length);
         return Scaffold(
           appBar: AppBar(
             title: Text('Car Details - ${widget.carId}'),
           ),
+          // body: ListView.builder(itemBuilder: (context, index){return Te}, itemCount: 5,),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,6 +110,22 @@ class _CarDetailsState extends State<CarDetails> {
                 Text('Mileage : $mileage'),
                 Text('Seats : $seats'),
                 Text('Price Per Day : $price'),
+                // ListView.builder(itemBuilder: (context, index) {
+                //   return Text(DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(available_dates[index].seconds * 1000)));
+                // }, itemCount: available_dates.length, shrinkWrap: true,)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  // child: ElevatedButton(
+                  //   onPressed: (){
+                  //
+                  //   },
+                  //   child: Text('select date'),
+                  // )
+                  child: ElevatedButton(
+                    onPressed: () => _showDatePickerDialog(context),
+                    child: Text('Pick Dates'),
+                  ),
+                ),
               ],
             ),
           ),

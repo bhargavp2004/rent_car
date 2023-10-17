@@ -33,7 +33,7 @@ class _AddPostState extends State<AddPost> {
   TextEditingController _mileageController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-
+  DateRangePickerController _dateRangePickerController = DateRangePickerController();
   late File? selectedImage = File('');
 
   Future<void> _pickImage() async {
@@ -91,6 +91,7 @@ class _AddPostState extends State<AddPost> {
           'description': _descriptionController.text,
           'image': imageURL,
           'owner': FirebaseAuth.instance.currentUser!.uid,
+          'available_dates': _dateRangePickerController.selectedDates,
         });
         showSnackbar("Car Added Successfully");
         Navigator.push(
@@ -109,7 +110,7 @@ class _AddPostState extends State<AddPost> {
   @override
   Widget build(BuildContext context) {
     List<DateTime> _selectedDate = [];
-    DateTime _startDate = DateTime.now().subtract(Duration(days: 30));
+    DateTime _startDate = DateTime.now();
     DateTime _endDate = DateTime.now().add(Duration(days: 30));
 
     void _showDatePickerDialog(BuildContext context) {
@@ -125,7 +126,9 @@ class _AddPostState extends State<AddPost> {
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.multiple,
                 initialSelectedRange: PickerDateRange(_startDate, _endDate),
-                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {},
+                // onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {_dateRangePickerController.selectedDates!.forEach((element) {print((element.year));});},
+                controller: _dateRangePickerController,
+                minDate: _startDate,
               ),
             ),
             actions: <Widget>[
@@ -198,7 +201,7 @@ class _AddPostState extends State<AddPost> {
                 // )
                 child: ElevatedButton(
                   onPressed: () => _showDatePickerDialog(context),
-                  child: Text('Pick a Date'),
+                  child: Text('Pick Dates'),
                 ),
               ),
               Padding(
