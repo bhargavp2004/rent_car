@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rent_car/pages/addpost.dart';
-import 'package:rent_car/pages/cargriditem.dart';
+import 'package:rent_car/pages/cargriditem_user.dart';
 import 'package:rent_car/pages/login.dart';
 import 'package:rent_car/pages/login_user.dart';
 import 'package:rent_car/pages/myposts.dart';
@@ -62,7 +62,7 @@ class MyHomePage_User extends StatelessWidget {
                   print("Inside IF");
                   var brand = carData['brand'] as String;
                   var model = carData['model'] as String;
-                  return CarGridItem(
+                  return CarGridItem_User(
                     carId: carId,
                     brand: brand,
                     model: model,
