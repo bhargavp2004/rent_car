@@ -167,47 +167,47 @@ class _FilterState extends State<Filter> {
                   ],
                 ),
               ),
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  trackHeight: 10.0,
-                  trackShape: RoundedRectSliderTrackShape(),
-                  activeTrackColor: Colors.purple.shade800,
-                  inactiveTrackColor: Colors.purple.shade100,
-                  thumbShape: RoundSliderThumbShape(
-                    enabledThumbRadius: 14.0,
-                    pressedElevation: 8.0,
-                  ),
-                  thumbColor: Colors.pinkAccent,
-                  overlayColor: Colors.pink.withOpacity(0.2),
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 32.0),
-                  tickMarkShape: RoundSliderTickMarkShape(),
-                  activeTickMarkColor: Colors.pinkAccent,
-                  inactiveTickMarkColor: Colors.white,
-                  valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                  valueIndicatorColor: Colors.black,
-                  valueIndicatorTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Text('mileage: $_mileage', style: TextStyle(fontSize: 20),),
-                    Slider(
-                      min: 0.0,
-                      max: 12.0,
-                      value: _mileage,
-                      divisions: 12,
-                      label: '${_mileage.round()}',
-                      onChanged: (value) {
-                        setState(() {
-                          _mileage = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              // SliderTheme(
+              //   data: SliderTheme.of(context).copyWith(
+              //     trackHeight: 10.0,
+              //     trackShape: RoundedRectSliderTrackShape(),
+              //     activeTrackColor: Colors.purple.shade800,
+              //     inactiveTrackColor: Colors.purple.shade100,
+              //     thumbShape: RoundSliderThumbShape(
+              //       enabledThumbRadius: 14.0,
+              //       pressedElevation: 8.0,
+              //     ),
+              //     thumbColor: Colors.pinkAccent,
+              //     overlayColor: Colors.pink.withOpacity(0.2),
+              //     overlayShape: RoundSliderOverlayShape(overlayRadius: 32.0),
+              //     tickMarkShape: RoundSliderTickMarkShape(),
+              //     activeTickMarkColor: Colors.pinkAccent,
+              //     inactiveTickMarkColor: Colors.white,
+              //     valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+              //     valueIndicatorColor: Colors.black,
+              //     valueIndicatorTextStyle: TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 20.0,
+              //     ),
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Text('mileage: $_mileage', style: TextStyle(fontSize: 20),),
+              //       Slider(
+              //         min: 0.0,
+              //         max: 12.0,
+              //         value: _mileage,
+              //         divisions: 12,
+              //         label: '${_mileage.round()}',
+              //         onChanged: (value) {
+              //           setState(() {
+              //             _mileage = value;
+              //           });
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
               //   child: TextFormField(
