@@ -1,6 +1,8 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CarDetails_User extends StatefulWidget {
   final String carId;
@@ -13,7 +15,8 @@ class CarDetails_User extends StatefulWidget {
 class _CarDetails_UserState extends State<CarDetails_User> {
   late Future<DocumentSnapshot<Map<String, dynamic>>> _carDetails;
   var booked_dates=<DateTime>[];
-
+  bool booked=false;
+  // final animationController = ();
   @override
   void initState() {
     super.initState();
@@ -22,12 +25,53 @@ class _CarDetails_UserState extends State<CarDetails_User> {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> _fetchCarDetails(String carId) async {
     var documentSnapshot = await FirebaseFirestore.instance.collection('cars').doc(carId).get();
+    // DocumentReference docReference = documentSnapshot.reference;
+    DocumentReference docRef = FirebaseFirestore.instance.collection('cars').doc(carId);
+
+    // Retrieve the current document data
+    DocumentSnapshot snapshot = await docRef.get();
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>? ?? {};
+
+    // Ensure the 'available_dates' field is an array
+    if (data.containsKey('available_dates') && data['available_dates'] is List) {
+      List<dynamic> availableDates = List.from(data['available_dates']);
+      DateTime currentDate = DateTime.now();
+      availableDates.removeWhere((date) {
+        DateTime dateObject = DateTime.fromMillisecondsSinceEpoch(date.seconds * 1000);
+        return dateObject.isBefore(currentDate);
+      });
+      await docRef.update({'available_dates': availableDates});
+    }
     return documentSnapshot;
   }
 
   @override
   Widget build(BuildContext context) {
-
+    Book () async{
+      DocumentReference docRef = FirebaseFirestore.instance.collection('cars').doc(widget.carId);
+      DocumentSnapshot snapshot = await docRef.get();
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>? ?? {};
+      if (data.containsKey('available_dates') && data['available_dates'] is List) {
+        List<dynamic> availableDates = List.from(data['available_dates']);
+        DateTime currentDate = DateTime.now();
+        availableDates.removeWhere((date) {
+          print(date);
+          return booked_dates.contains(DateTime.fromMillisecondsSinceEpoch(date.seconds * 1000));
+        });
+        await docRef.update({'available_dates': availableDates});
+      }
+    }
+    if(booked) {
+      Future.delayed(Duration(seconds: 5), (){
+        setState(() {
+          Navigator.pop(context);
+          booked=false;
+        });
+      });
+      return Scaffold(
+        body: Center(child: Lottie.network('https://lottie.host/2a7cc1b2-3098-4dae-a0e9-37f03b189677/ae3bssCiLU.json', animate: true, repeat: false)),
+      );
+    }
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: _carDetails,
       builder: (context, snapshot) {
@@ -38,12 +82,10 @@ class _CarDetails_UserState extends State<CarDetails_User> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-
         var carData = snapshot.data?.data();
         if (carData == null) {
           return Center(child: Text('Car not found'));
         }
-
         // Now you have the carData, you can use it to display details
         // For example, to display brand and model:
         var brand = carData['brand'];
@@ -59,7 +101,7 @@ class _CarDetails_UserState extends State<CarDetails_User> {
         carData['available_dates'].toList().forEach((e) {
           available_dates.add(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000));
         });
-        print(available_dates);
+        // print(available_dates);
         void _showDatePickerDialog(BuildContext context) {
           showDialog(
             context: context,
@@ -77,8 +119,13 @@ class _CarDetails_UserState extends State<CarDetails_User> {
                     // startRangeSelectionColor: Colors.deepPurple,
                     controller: dateController,
                     onSelectionChanged: (DateRangePickerSelectionChangedArgs args){
+                      var list=<DateTime>[];
+                      args.value.toList().forEach((e) {
+                        // print(e);
+                        list.add(e);
+                      });
                       setState(() {
-                        booked_dates=args.value;
+                        booked_dates=list;
                       });
                     },
                     selectableDayPredicate: (date) {
@@ -114,13 +161,17 @@ class _CarDetails_UserState extends State<CarDetails_User> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Brand: $brand'),
-                Text('Model: $model'),
-                Text('Year : $year'),
-                Text('Mileage : $mileage'),
-                Text('Seats : $seats'),
-                Text('Price Per Day : $price'),
-                ListView.builder(itemBuilder: (context, index) {print(booked_dates[index]);return Center(child: Text(DateFormat('dd/MM/yyyy').format(booked_dates[index])));}, shrinkWrap: true, itemCount: booked_dates.length,),
+                Text('Brand: $brand', style: TextStyle(fontSize: 20.0),),
+                Text('Model: $model', style: TextStyle(fontSize: 20.0),),
+                Text('Year : $year', style: TextStyle(fontSize: 20.0),),
+                Text('Mileage : $mileage', style: TextStyle(fontSize: 20.0),),
+                Text('Seats : $seats', style: TextStyle(fontSize: 20.0),),
+                Text('Price Per Day : $price', style: TextStyle(fontSize: 20.0),),
+                if(booked_dates.isNotEmpty) Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Selected Dates: ', style: TextStyle(fontSize: 20.0),),
+                ),
+                ListView.builder(itemBuilder: (context, index) {return Center(child: Text(DateFormat('dd/MM/yyyy').format(booked_dates[index]), style: TextStyle(color: Colors.green, fontSize: 25.0, fontWeight: FontWeight.bold),));}, shrinkWrap: true, itemCount: booked_dates.length,),
                 // ListView.builder(itemBuilder: (context, index) {
                 //   return Text(DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(available_dates[index].seconds * 1000)));
                 // }, itemCount: available_dates.length, shrinkWrap: true,),
@@ -135,6 +186,23 @@ class _CarDetails_UserState extends State<CarDetails_User> {
                   child: ElevatedButton(
                     onPressed: () => _showDatePickerDialog(context),
                     child: Text('Pick Dates'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: ElevatedButton(
+                    onPressed: () async{
+                      if(await confirm(context, content: Text("You have to pay ${booked_dates.length * price}"), title: Text('Confirm Booking'), textOK: Text('Book'))){
+                        // payment done and now just book it
+                        await Book();
+                        print('booked');
+
+                        setState(() {
+                          booked=true;
+                        });
+                      }
+                    },
+                    child: Text('Book Now !'),
                   ),
                 ),
               ],

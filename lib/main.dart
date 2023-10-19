@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rent_car/pages/home_user.dart';
 import 'package:rent_car/pages/login.dart';
 import 'pages/home.dart';
@@ -80,7 +81,7 @@ class _MyAppState extends State<MyApp> {
       title: 'CAR RENTAL',
       theme: customTheme,
       // theme: ThemeData(useMaterial3: true, customTheme),
-      home: (isLoading.compareTo('loading')==0?Text('loading'):(isLoading.compareTo('admin')==0?MyHomePage():(isLoading.compareTo('user')==0?MyHomePage_User():(isLoading.compareTo('signin')==0?SignInPage():null)))),
+      home: (isLoading.compareTo('loading')==0?SpinKitWaveSpinner(color: Colors.deepPurple.shade200):(isLoading.compareTo('admin')==0?MyHomePage():(isLoading.compareTo('user')==0?MyHomePage_User():(isLoading.compareTo('signin')==0?SignInPage():null)))),
       // home: MyHomePage()
     );
   }
