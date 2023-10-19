@@ -19,11 +19,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void checkUser() {}
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
-
-  // redirecting to user home page if current user is "user"
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +29,6 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: customTheme.primaryColor,
       ),
       body: Container(
-        // Set background color to blue
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => CarGridPage()));
                 },
-                child: Text('View My Posts'),
+                child: Text('Manage Posts'),
                 style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
               ),
               ElevatedButton(
@@ -53,23 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Add Post'),
                 style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
               ),
+              
               ElevatedButton(
                 onPressed: () {
-                  // Add your action for "Delete Post" here
-                },
-                child: Text('Delete Post'),
-                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Add your action for "Update Post" here
-                },
-                child: Text('Update Post'),
-                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Add your action for "logout" here
                   FirebaseAuth.instance.signOut().then((value) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignInPage()));

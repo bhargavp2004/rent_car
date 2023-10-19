@@ -48,6 +48,7 @@ class CarGridPage extends StatelessWidget {
                     brand: brand,
                     model: model,
                     imageURL: imagePath,
+                    
                   );
                 } else {
                   // Handle the case where imagePath is null or empty
