@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rent_car/pages/addpost.dart';
@@ -6,6 +7,7 @@ import 'package:rent_car/pages/cargriditem_user.dart';
 import 'package:rent_car/pages/login.dart';
 import 'package:rent_car/pages/login_user.dart';
 import 'package:rent_car/pages/myposts.dart';
+import 'package:rent_car/pages/filter.dart' as Filter_Posts;
 import 'theme.dart';
 import 'cargridpage.dart';
 import 'dart:io';
@@ -13,16 +15,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:quantupi/quantupi.dart';
 
+class MyHomePage_User extends StatefulWidget {
+  @override
+  State<MyHomePage_User> createState() => _MyHomePage_UserState();
+}
 
-class MyHomePage_User extends StatelessWidget {
+class _MyHomePage_UserState extends State<MyHomePage_User> {
+  // bool isFilter=false;
+  // FilterObj filterObj=new FilterObj();
   var buttonColor = customTheme.primaryColor;
   @override
   Widget build(BuildContext context) {
+    var filter=Map<String, dynamic>();
+    if(ModalRoute.of(context)?.settings.arguments != null){
+      filter=ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    }
+    // print(filter);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple.shade200,
         title: Text('Flutter UI Example'),
         actions: [
+          IconButton(onPressed: (){setState(() {Navigator.push(context, CupertinoPageRoute(builder: (context) => Filter_Posts.Filter()));});}, icon: Icon(Icons.filter_alt_rounded, size: 30,)),
           IconButton(
             onPressed: (){
               FirebaseAuth.instance.signOut().then((c){
@@ -32,7 +46,7 @@ class MyHomePage_User extends StatelessWidget {
             icon: Icon(Icons.logout_rounded, size: 30,))
         ],
       ),
-      body: StreamBuilder(
+      body:StreamBuilder(
         stream: FirebaseFirestore.instance.collection('cars').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -43,7 +57,22 @@ class MyHomePage_User extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          var carDocs = snapshot.data?.docs;
+          var carDocsinit = snapshot.data?.docs;
+          var carDocs = filter.isNotEmpty ? carDocsinit?.where((element) {
+            final data=element.data();
+            final seats = data['seats'] ?? 0;
+            final price = data['price_per_day'] ?? 0;
+            final available_dates=<Timestamp>[];
+            filter?['dates']?.toList().forEach((e){
+              available_dates.add(Timestamp.fromDate(e));
+            });
+            var data_available_dates=<dynamic>[];
+            if(data['available_dates']!=null)
+              data_available_dates = data['available_dates'] as List<dynamic>;
+            // print(data['available_dates']?.toList().contains(available_dates));
+            bool flag=false;
+            return price<=filter['budget'] && seats>=filter['seats'] && available_dates.every((element) => data_available_dates.contains(element));
+          }).toList() : carDocsinit;
           // print(carDocs);
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -54,7 +83,7 @@ class MyHomePage_User extends StatelessWidget {
             itemBuilder: (context, index) {
               if (carDocs != null) {
                 var carData = carDocs[index].data() as Map<String, dynamic>;
-                print(carData);
+                // print(carData);
                 var imagePath = carData['image'] as String?;
                 var carId = carDocs[index].id;
 
@@ -67,6 +96,7 @@ class MyHomePage_User extends StatelessWidget {
                     brand: brand,
                     model: model,
                     imageURL: imagePath,
+                    filter: filter
                   );
                 } else {
                   // Handle the case where imagePath is null or empty

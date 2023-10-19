@@ -6,12 +6,13 @@ class CarGridItem_User extends StatelessWidget {
   final String brand;
   final String model;
   final String imageURL;
-
+  final Map<String, dynamic> filter;
   CarGridItem_User(
-      {required this.carId, required this.brand, required this.model, required this.imageURL});
+      {required this.carId, required this.brand, required this.model, required this.imageURL, required this.filter});
 
   @override
   Widget build(BuildContext context) {
+    // print(filter);
     return Card(
       child: SingleChildScrollView(
         child: Column(
