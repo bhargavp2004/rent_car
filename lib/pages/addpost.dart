@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,7 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   var imgurl = null;
-
+  bool loading=false;
   void showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -92,6 +93,7 @@ class _AddPostState extends State<AddPost> {
           'image': imageURL,
           'owner': FirebaseAuth.instance.currentUser!.uid,
           'available_dates': _dateRangePickerController.selectedDates,
+          'profit': 0,
         });
         showSnackbar("Car Added Successfully");
         Navigator.push(
@@ -159,11 +161,12 @@ class _AddPostState extends State<AddPost> {
     //     });
     //   }
     // }
+    // if(loading==true) return Scaffold(body: Center(child: SpinKitWaveSpinner(color: Colors.deepPurple.shade200)),);
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Post'),
       ),
-      body: Padding(
+      body: loading==true?SpinKitWaveSpinner(color: Colors.black):Padding(
         padding: const EdgeInsets.all(18.0),
         child: Form(
           key: _formKey,
@@ -256,7 +259,7 @@ class _AddPostState extends State<AddPost> {
                 child: Text('Select Image'),
               ),
               SizedBox(height: 10),
-              if (selectedImage!.path.isNotEmpty)
+              if (selectedImage!=null && selectedImage!.path.isNotEmpty)
                 Image.file(
                   selectedImage!,
                   fit: BoxFit.cover,
@@ -264,7 +267,15 @@ class _AddPostState extends State<AddPost> {
                 ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _saveCarData,
+                onPressed: () async{
+                  setState(() {
+                    loading=true;
+                  });
+                  _saveCarData();
+                  setState(() {
+                    loading=false;
+                  });
+                },
                 child: Text('Submit'),
               ),
             ],

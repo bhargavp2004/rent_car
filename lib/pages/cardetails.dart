@@ -52,6 +52,7 @@ class _CarDetailsState extends State<CarDetails> {
         var mileage = carData['mileage'];
         var seats = carData['seats'];
         var price = carData['price_per_day'];
+        var profit = carData['profit'];
         // print(carData['available_dates'].toList().forEach((e){print(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000, isUtc: true)
         // );}));
         // print(carData['available_dates'].toList().length);
@@ -70,6 +71,7 @@ class _CarDetailsState extends State<CarDetails> {
                 Text('Mileage : $mileage'),
                 Text('Seats : $seats'),
                 Text('Price Per Day : $price'),
+                Text('Profit: $profit'),
               ],
             ),
           ),

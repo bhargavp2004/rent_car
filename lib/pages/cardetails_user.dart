@@ -47,20 +47,6 @@ class _CarDetails_UserState extends State<CarDetails_User> {
 
   @override
   Widget build(BuildContext context) {
-    Book () async{
-      DocumentReference docRef = FirebaseFirestore.instance.collection('cars').doc(widget.carId);
-      DocumentSnapshot snapshot = await docRef.get();
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>? ?? {};
-      if (data.containsKey('available_dates') && data['available_dates'] is List) {
-        List<dynamic> availableDates = List.from(data['available_dates']);
-        DateTime currentDate = DateTime.now();
-        availableDates.removeWhere((date) {
-          print(date);
-          return booked_dates.contains(DateTime.fromMillisecondsSinceEpoch(date.seconds * 1000));
-        });
-        await docRef.update({'available_dates': availableDates});
-      }
-    }
     if(booked) {
       Future.delayed(Duration(seconds: 5), (){
         setState(() {
@@ -94,6 +80,8 @@ class _CarDetails_UserState extends State<CarDetails_User> {
         var mileage = carData['mileage'];
         var seats = carData['seats'];
         var price = carData['price_per_day'];
+        var profit = carData['profit'];
+        print(carData['profit']);
         var available_dates=[];
 
         var dateController=new DateRangePickerController();
@@ -149,6 +137,20 @@ class _CarDetails_UserState extends State<CarDetails_User> {
             },
           );
         }
+        Book () async {
+          DocumentReference docRef = FirebaseFirestore.instance.collection('cars').doc(widget.carId);
+          DocumentSnapshot snapshot = await docRef.get();
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>? ?? {};
+          if (data.containsKey('available_dates') && data['available_dates'] is List) {
+            List<dynamic> availableDates = List.from(data['available_dates']);
+            DateTime currentDate = DateTime.now();
+            availableDates.removeWhere((date) {
+              // print(date);
+              return booked_dates.contains(DateTime.fromMillisecondsSinceEpoch(date.seconds * 1000));
+            });
+            await docRef.update({'available_dates': availableDates, 'profit': profit+(price*booked_dates.length)});
+          }
+        }
         // print(carData['available_dates'].toList().forEach((e){print(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000, isUtc: true)
         // );}));
         // print(carData['available_dates'].toList().length);
@@ -196,7 +198,6 @@ class _CarDetails_UserState extends State<CarDetails_User> {
                         // payment done and now just book it
                         await Book();
                         print('booked');
-
                         setState(() {
                           booked=true;
                         });
