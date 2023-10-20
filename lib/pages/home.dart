@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value) {
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => SignInPage()));
                   });
                 },
