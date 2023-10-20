@@ -10,6 +10,7 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
+  bool flag=true;
   var _budget=500.0;
   var _seats=2.0;
   var _mileage=0.0;
@@ -49,7 +50,23 @@ class _FilterState extends State<Filter> {
     );
   }
   @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    if(ModalRoute.of(context)?.settings.arguments != null && flag){
+      final filters=ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      _budget = filters['filter']['budget'] ?? _budget;
+      _seats = filters['filter']['seats'] ?? _seats;
+      print(filters['filter']['dates']);
+      _dateRangePickerController.selectedDates = filters['filter']['dates'] ?? _dateRangePickerController.selectedDates;
+      setState(() {
+        flag=false;
+      });
+    }
     _mileageController.value=TextEditingValue(text: '0');
     return Scaffold(
       appBar: AppBar(
@@ -250,6 +267,22 @@ class _FilterState extends State<Filter> {
                     children: [
                       Text('Filter Posts...', style: TextStyle(fontSize: 25.0),),
                       Icon(Icons.filter_alt_rounded, size: 30.0,),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black),
+                  ),
+                  onPressed: (){Navigator.popUntil(context, (route) => route.isFirst); Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage_User()));},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Remove Filters...', style: TextStyle(fontSize: 25.0),),
+                      Icon(Icons.filter_alt_off_rounded, size: 30.0,),
                     ],
                   ),
                 ),

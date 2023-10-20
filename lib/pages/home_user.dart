@@ -36,7 +36,9 @@ class _MyHomePage_UserState extends State<MyHomePage_User> {
         backgroundColor: Colors.deepPurple.shade200,
         title: Text('Flutter UI Example'),
         actions: [
-          IconButton(onPressed: (){setState(() {Navigator.push(context, CupertinoPageRoute(builder: (context) => Filter_Posts.Filter()));});}, icon: Icon(Icons.filter_alt_rounded, size: 30,)),
+          IconButton(onPressed: (){setState(() {Navigator.push(context, CupertinoPageRoute(builder: (context) => Filter_Posts.Filter(), settings: RouteSettings(arguments: {
+            'filter': filter,
+          })));});}, icon: Icon(Icons.filter_alt_rounded, size: 30,)),
           IconButton(
             onPressed: (){
               FirebaseAuth.instance.signOut().then((c){
