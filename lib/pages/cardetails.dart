@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:rent_car/pages/theme.dart';
+
 class CarDetails extends StatefulWidget {
   final String carId;
+
   CarDetails({required this.carId});
 
   @override
@@ -26,8 +27,6 @@ class _CarDetailsState extends State<CarDetails> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: _carDetails,
       builder: (context, snapshot) {
@@ -44,8 +43,6 @@ class _CarDetailsState extends State<CarDetails> {
           return Center(child: Text('Car not found'));
         }
 
-        // Now you have the carData, you can use it to display details
-        // For example, to display brand and model:
         var brand = carData['brand'];
         var model = carData['model'];
         var year = carData['year'];
@@ -53,25 +50,52 @@ class _CarDetailsState extends State<CarDetails> {
         var seats = carData['seats'];
         var price = carData['price_per_day'];
         var profit = carData['profit'];
-        // print(carData['available_dates'].toList().forEach((e){print(DateTime.fromMillisecondsSinceEpoch(e.seconds * 1000, isUtc: true)
-        // );}));
-        // print(carData['available_dates'].toList().length);
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Car Details - ${widget.carId}'),
+            backgroundColor: customTheme.primaryColor,
           ),
-          // body: ListView.builder(itemBuilder: (context, index){return Te}, itemCount: 5,),
-          body: Center(
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Brand: $brand'),
-                Text('Model: $model'),
-                Text('Year : $year'),
-                Text('Mileage : $mileage'),
-                Text('Seats : $seats'),
-                Text('Price Per Day : $price'),
-                Text('Profit: $profit'),
+                Text(
+                  'Brand: $brand',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Model: $model',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Year: $year',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Mileage: $mileage Kmpl',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Seats: $seats',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Price Per Day: Rs. $price',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Profit: Rs. $profit',
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
           ),

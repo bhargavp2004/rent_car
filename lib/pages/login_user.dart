@@ -7,6 +7,7 @@ import 'package:rent_car/pages/home_user.dart';
 import 'signup.dart';
 import 'dart:core';
 import 'login.dart';
+import 'theme.dart';
 
 class SignInPage_User extends StatefulWidget {
   @override
@@ -79,6 +80,7 @@ class _SignInPage_UserState extends State<SignInPage_User> {
       appBar: AppBar(
         title: Text('Sign In'),
         centerTitle: true,
+        backgroundColor: customTheme.primaryColor
         // actionsIconTheme: IconThemeData(Icons.add,),
 
         // actionsIconTheme: ,
@@ -114,9 +116,11 @@ class _SignInPage_UserState extends State<SignInPage_User> {
                   SignIn(context);
                 },
                 child: Text('Sign In as User'),
+                style : ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor)
               ),
               CupertinoButton(
                 child: Text('Create an User Account'),
+                
                 onPressed: () {
                   Navigator.pushReplacement(
                       context,
@@ -128,6 +132,7 @@ class _SignInPage_UserState extends State<SignInPage_User> {
               ),
               CupertinoButton(
                 child: Text('are you an admin?'),
+                
                 onPressed: () {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
                 },

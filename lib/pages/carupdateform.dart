@@ -8,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rent_car/pages/home.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import 'theme.dart';
+
 class UpdateCarForm extends StatefulWidget {
   final String carId;
 
@@ -210,6 +212,7 @@ class _UpdateCarFormState extends State<UpdateCarForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Update Car Details'),
+        backgroundColor: customTheme.primaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -253,6 +256,7 @@ class _UpdateCarFormState extends State<UpdateCarForm> {
                 child: ElevatedButton(
                   onPressed: () => _showDatePickerDialog(context),
                   child: Text('Pick Dates'),
+                  style: ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
                 ),
               ),
               Padding(
@@ -303,6 +307,7 @@ class _UpdateCarFormState extends State<UpdateCarForm> {
               ElevatedButton(
                 onPressed: _pickImage,
                 child: Text('Select Image'),
+                style: ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
               ),
               SizedBox(height: 10),
               if (_imageUrl != null && Uri.parse(_imageUrl!).isAbsolute)
@@ -332,6 +337,7 @@ class _UpdateCarFormState extends State<UpdateCarForm> {
               ElevatedButton(
                 onPressed: _updateCarDetails,
                 child: Text('Update Car'),
+                style: ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor),
               ),
             ],
           ),

@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CAR RENTAL',
+      title: 'Pals On Wheels',
       theme: customTheme,
       // theme: ThemeData(useMaterial3: true, customTheme),
       home: (isLoading.compareTo('loading')==0?SpinKitWaveSpinner(color: Colors.deepPurple.shade200):(isLoading.compareTo('admin')==0?MyHomePage():(isLoading.compareTo('user')==0?MyHomePage_User():(isLoading.compareTo('signin')==0?SignInPage():null)))),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cardetails.dart';
 import 'carupdateform.dart';
+import 'theme.dart';
 
 class CarGridItem extends StatelessWidget {
   final String carId;
@@ -77,10 +78,10 @@ class CarGridItem extends StatelessWidget {
                         );
                       },
                       child: Text("View More"),
+                      style : ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Call the deletePost function when the button is pressed
                         deletePost(carId);
                       },
                       style: ElevatedButton.styleFrom(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cardetails_user.dart';
+import 'theme.dart';
 
 class CarGridItem_User extends StatelessWidget {
   final String carId;
@@ -50,7 +51,8 @@ class CarGridItem_User extends StatelessWidget {
                       onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CarDetails_User(carId: carId),));
                       },
-                      child: Text("View More")
+                      child: Text("View More"),
+                      style : ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor)
                   ),
                 ],
               ),

@@ -5,6 +5,7 @@ import 'package:rent_car/pages/login_user.dart';
 import 'login.dart';
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'theme.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -105,6 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         title: Text('Sign Up'),
         centerTitle: true,
+        backgroundColor: customTheme.primaryColor
       ),
       body: Center(
         child: Padding(
@@ -138,6 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   createAccount(context);
                 },
+                style : ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor),
                 child: Text('Sign Up'),
               ),
               CupertinoButton(

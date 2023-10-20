@@ -2,13 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cargriditem.dart';
+import 'theme.dart';
 
 class CarGridPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Car Grid'),
+        title: Text('Your Posts'),
+        centerTitle: true,
+        backgroundColor: customTheme.primaryColor,
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

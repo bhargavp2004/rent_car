@@ -33,8 +33,8 @@ class _MyHomePage_UserState extends State<MyHomePage_User> {
     // print(filter);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple.shade200,
-        title: Text('Flutter UI Example'),
+        backgroundColor: customTheme.primaryColor,
+        title: Text('Pals On Wheels'),
         actions: [
           IconButton(onPressed: (){setState(() {Navigator.push(context, CupertinoPageRoute(builder: (context) => Filter_Posts.Filter(), settings: RouteSettings(arguments: {
             'filter': filter,

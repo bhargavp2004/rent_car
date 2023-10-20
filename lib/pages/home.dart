@@ -25,7 +25,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter UI Example'),
+        title: Text('Pals On Wheels'),
+        centerTitle: true,
         backgroundColor: customTheme.primaryColor,
       ),
       body: Container(

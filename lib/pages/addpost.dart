@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rent_car/pages/home.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'theme.dart';
 
 class AddPost extends StatefulWidget {
   @override
@@ -146,25 +147,10 @@ class _AddPostState extends State<AddPost> {
       );
     }
 
-    // DateTime? selectedDate;
-    // selectDate() async{
-    //   final DateTime? picked = await showDatePicker(
-    //     context: context,
-    //     initialDate: selectedDate ?? DateTime.now(),
-    //     firstDate: DateTime(2000),
-    //     lastDate: DateTime(2101),
-    //   );
-
-    //   if (picked != null && picked != selectedDate) {
-    //     setState(() {
-    //       selectedDate = picked;
-    //     });
-    //   }
-    // }
-    // if(loading==true) return Scaffold(body: Center(child: SpinKitWaveSpinner(color: Colors.deepPurple.shade200)),);
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Post'),
+        backgroundColor: customTheme.primaryColor,
       ),
       body: loading==true?SpinKitWaveSpinner(color: Colors.black):Padding(
         padding: const EdgeInsets.all(18.0),
@@ -205,6 +191,7 @@ class _AddPostState extends State<AddPost> {
                 child: ElevatedButton(
                   onPressed: () => _showDatePickerDialog(context),
                   child: Text('Pick Dates'),
+                  style: ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
                 ),
               ),
               Padding(
@@ -257,6 +244,7 @@ class _AddPostState extends State<AddPost> {
               ElevatedButton(
                 onPressed: _pickImage,
                 child: Text('Select Image'),
+                style: ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
               ),
               SizedBox(height: 10),
               if (selectedImage!=null && selectedImage!.path.isNotEmpty)
@@ -277,6 +265,7 @@ class _AddPostState extends State<AddPost> {
                   });
                 },
                 child: Text('Submit'),
+                style: ElevatedButton.styleFrom(backgroundColor: customTheme.primaryColor),
               ),
             ],
           ),

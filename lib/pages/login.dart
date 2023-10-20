@@ -6,6 +6,7 @@ import 'package:rent_car/pages/home.dart';
 import 'signup.dart';
 import 'dart:core';
 import 'login_user.dart';
+import 'theme.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -76,8 +77,9 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text('Admin Sign In'),
         centerTitle: true,
+        backgroundColor : customTheme.primaryColor,
       ),
       body: Center(
         child: Padding(
@@ -110,6 +112,7 @@ class _SignInPageState extends State<SignInPage> {
                   SignIn(context);
                 },
                 child: Text('Sign In as Admin'),
+                style : ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor)
               ),
               CupertinoButton(
                 child: Text('Create an Admin Account'),
@@ -131,6 +134,7 @@ class _SignInPageState extends State<SignInPage> {
                       CupertinoPageRoute(
                           builder: (context) => SignInPage_User()));
                 },
+                
               ),
             ],
           ),

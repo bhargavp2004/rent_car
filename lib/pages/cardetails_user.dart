@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'theme.dart';
 class CarDetails_User extends StatefulWidget {
   final String carId;
   CarDetails_User({required this.carId});
@@ -157,6 +158,7 @@ class _CarDetails_UserState extends State<CarDetails_User> {
         return Scaffold(
           appBar: AppBar(
             title: Text('Car Details - ${widget.carId}'),
+            backgroundColor : customTheme.primaryColor,
           ),
           // body: ListView.builder(itemBuilder: (context, index){return Te}, itemCount: 5,),
           body: Center(
@@ -188,6 +190,8 @@ class _CarDetails_UserState extends State<CarDetails_User> {
                   child: ElevatedButton(
                     onPressed: () => _showDatePickerDialog(context),
                     child: Text('Pick Dates'),
+                    style : ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor)
+                    
                   ),
                 ),
                 Padding(
@@ -204,6 +208,7 @@ class _CarDetails_UserState extends State<CarDetails_User> {
                       }
                     },
                     child: Text('Book Now !'),
+                    style : ElevatedButton.styleFrom(backgroundColor : customTheme.primaryColor)
                   ),
                 ),
               ],
